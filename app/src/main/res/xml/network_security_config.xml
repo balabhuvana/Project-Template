@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">reqres.in</domain>
+        <pin-set expiration="2022-04-24">
+            <pin digest="SHA-256">BiDE0on+Zn+0iwrca1dMeZlvH0UqhQik2Bl6btjkzhM=</pin>
+            <pin digest="SHA-256">Y9mvm0exBk1JoQ57f9Vm28jKo5lFm/woKcVxrYxu80o=</pin>
+            <pin digest="SHA-256">nWiSV/YZ1qbrQNmx0cyjMypXVGUg3QGY7OwwwNjsyjQ=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
