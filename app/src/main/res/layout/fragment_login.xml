@@ -88,7 +88,7 @@
             app:layout_constraintRight_toLeftOf="@+id/next_button"
             android:text="@string/button_cancel"/>
 
-    <AutoCompleteTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_new_to_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

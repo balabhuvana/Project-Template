@@ -89,13 +89,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button"
+            android:id="@+id/register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@+id/password_text_input"
-            android:text="@string/button_next"/>
+            android:text="@string/button_register"/>
 
     <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel_button"
@@ -104,10 +104,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@+id/password_text_input"
-            app:layout_constraintRight_toLeftOf="@+id/next_button"
+            app:layout_constraintRight_toLeftOf="@+id/register_button"
             android:text="@string/button_cancel"/>
 
-    <AutoCompleteTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_new_to_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

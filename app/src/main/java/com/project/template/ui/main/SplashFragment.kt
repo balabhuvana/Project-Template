@@ -3,14 +3,28 @@ package com.project.template.ui.main
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.project.template.R
+import com.project.template.databinding.FragmentSplashBinding
 
-class SplashFragment : Fragment(R.layout.fragment_splash) {
+class SplashFragment : Fragment() {
+
+    private var _binding: FragmentSplashBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +46,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun showOrHideProgressBar(showOrHide: Int) {
-//        splashProgressBar.visibility = showOrHide
+        _binding?.splashProgressBar?.visibility = showOrHide
     }
 
 }
