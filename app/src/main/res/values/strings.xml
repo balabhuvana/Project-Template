@@ -15,4 +15,6 @@
     <string name="temp_user_name">arunkumarv</string>
     <string name="temp_email">eve.holt@reqres.in</string>
     <string name="temp_password">pistol</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
