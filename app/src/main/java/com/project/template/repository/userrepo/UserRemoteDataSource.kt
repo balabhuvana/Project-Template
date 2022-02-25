@@ -1,4 +1,4 @@
-package com.project.template.repository
+package com.project.template.repository.userrepo
 
 import android.util.Log
 import com.google.gson.Gson

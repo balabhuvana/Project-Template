@@ -1,4 +1,4 @@
-package com.project.template.repository
+package com.project.template.repository.userrepo
 
 import com.project.template.network.UserApiWebService
 
