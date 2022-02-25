@@ -5,20 +5,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class RetrofitClient private constructor() {
-    private val userApiWebService: UserApiWebService
+    private val loginWebService: LoginWebService
 
     init {
 
         val retrofit: Retrofit =
             Retrofit.Builder()
-                .baseUrl(UserApiWebService.BASE_URL)
+                .baseUrl(LoginWebService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-        userApiWebService = retrofit.create(UserApiWebService::class.java)
+        loginWebService = retrofit.create(LoginWebService::class.java)
     }
 
-    fun getMyApi(): UserApiWebService {
-        return userApiWebService
+    fun getMyApi(): LoginWebService {
+        return loginWebService
     }
 
     companion object {
