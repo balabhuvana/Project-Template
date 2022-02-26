@@ -14,8 +14,12 @@
     <string name="new_to_app">New to App? Register here</string>
     <string name="all_ready_registered">Already Registered? Login here</string>
     <string name="temp_user_name">arunkumarv</string>
-    <string name="temp_email">eve.holt@reqres.in</string>
-    <string name="temp_password">cityslicka</string>
+    <string name="login_email">eve.holt@reqres.in</string>
+    <string name="login_password">cityslicka</string>
+    <string name="register_email">eve.holt@reqres.in</string>
+    <string name="register_password">pistol</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_successfully">You Have Successfully Logged in</string>
+    <string name="register_successfully">You Have Successfully register in</string>
 </resources>

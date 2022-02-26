@@ -7,7 +7,7 @@ import com.project.template.model.LoginResponseModel
 import com.project.template.model.LoginUiState
 import com.project.template.model.LoginUiState.Error
 import com.project.template.model.LoginUiState.Success
-import com.project.template.repo.LoginRepoViaFlow
+import com.project.template.repo.login.LoginRepoViaFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

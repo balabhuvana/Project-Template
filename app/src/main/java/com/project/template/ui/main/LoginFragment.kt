@@ -15,8 +15,8 @@ import com.project.template.databinding.FragmentLoginBinding
 import com.project.template.model.LoginRequestModel
 import com.project.template.model.LoginUiState
 import com.project.template.network.RetrofitClient
-import com.project.template.repo.LoginRDSViaFlow
-import com.project.template.repo.LoginRepoViaFlow
+import com.project.template.repo.login.LoginRDSViaFlow
+import com.project.template.repo.login.LoginRepoViaFlow
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {

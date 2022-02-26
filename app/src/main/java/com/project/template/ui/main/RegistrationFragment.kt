@@ -5,12 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
+import com.project.template.R
 import com.project.template.databinding.FragmentRegistrationBinding
+import com.project.template.model.RegistrationRequestModel
+import com.project.template.model.RegistrationUiState
+import com.project.template.network.RetrofitClient
+import com.project.template.repo.registration.RegistrationRDSViaFlow
+import com.project.template.repo.registration.RegistrationRepoViaFlow
+import kotlinx.coroutines.launch
 
 class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
+    private val registrationViewModel: RegistrationViewModelViaFlow by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
@@ -21,18 +35,53 @@ class RegistrationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.cancelButton.setOnClickListener {
-            val action = RegistrationFragmentDirections.actionRegistrationToLoginFragment()
-            it.findNavController().navigate(action)
+            launchScreen(it, RegistrationFragmentDirections.actionRegistrationToLoginFragment())
         }
 
         binding.tvNewToApp.setOnClickListener {
-            val action = RegistrationFragmentDirections.actionRegistrationToLoginFragment()
-            it.findNavController().navigate(action)
+            launchScreen(it, RegistrationFragmentDirections.actionRegistrationToLoginFragment())
         }
 
         binding.registerButton.setOnClickListener {
-            val action = RegistrationFragmentDirections.actionRegistrationToUserFragment()
-            it.findNavController().navigate(action)
+            val apiWebService = RetrofitClient.instance?.getMyApi()
+            val registrationRDSViaFlow = RegistrationRDSViaFlow(apiWebService)
+            val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
+            val registrationRequestModel = RegistrationRequestModel(
+                binding.etUsernameRegistration.text.toString(),
+                binding.etPasswordRegistration.text.toString()
+            )
+            requestApiCall(view, registrationRequestModel, registrationRepoViaFlow)
+        }
+    }
+
+    private fun launchScreen(view: View, action: NavDirections) {
+        view.findNavController().navigate(action)
+    }
+
+    private fun showSnackBar(view: View, displayText: String) {
+        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun requestApiCall(
+        view: View,
+        registrationRequestModel: RegistrationRequestModel,
+        registrationRepoViaFlow: RegistrationRepoViaFlow
+    ) {
+        registrationViewModel.registrationApiCallViewModel(registrationRequestModel, registrationRepoViaFlow)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                registrationViewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is RegistrationUiState.Success -> {
+                            showSnackBar(view, getString(R.string.register_successfully))
+                            launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserFragment())
+                        }
+                        is RegistrationUiState.Error -> {
+                            showSnackBar(view, "" + uiState.exception.message)
+                        }
+                    }
+                }
+            }
         }
     }
 }

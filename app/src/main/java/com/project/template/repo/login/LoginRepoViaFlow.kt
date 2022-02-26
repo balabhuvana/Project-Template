@@ -1,4 +1,4 @@
-package com.project.template.repo
+package com.project.template.repo.login
 
 import com.project.template.model.LoginRequestModel
 

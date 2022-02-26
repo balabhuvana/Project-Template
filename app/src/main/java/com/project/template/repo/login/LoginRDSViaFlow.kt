@@ -1,15 +1,15 @@
-package com.project.template.repo
+package com.project.template.repo.login
 
 import com.project.template.model.LoginRequestModel
-import com.project.template.network.LoginWebService
+import com.project.template.network.ApiWebService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class LoginRDSViaFlow(private var loginWebService: LoginWebService?) {
+class LoginRDSViaFlow(private var apiWebService: ApiWebService?) {
 
     fun fetchLoginApi(loginRequestModel: LoginRequestModel) = flow {
-        val loginResponseModel = loginWebService?.loginApiCall(loginRequestModel)
+        val loginResponseModel = apiWebService?.loginApiCall(loginRequestModel)
         emit(loginResponseModel)
     }.flowOn(Dispatchers.IO)
 
