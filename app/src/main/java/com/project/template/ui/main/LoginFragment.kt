@@ -9,8 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.project.template.R
 import com.project.template.databinding.FragmentLoginBinding
 import com.project.template.model.LoginRequestModel
 import com.project.template.model.LoginUiState
@@ -38,25 +40,12 @@ class LoginFragment : Fragment() {
             val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
             val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
             val loginRequestModel =
-                LoginRequestModel(binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString())
-            loginViewModelViaFlow.loginApiViewModel(loginRequestModel, loginRepoViaFlow)
+                buildLoginRequestObject(
+                    binding.etUsernameLogin.text.toString(),
+                    binding.etPasswordLogin.text.toString()
+                )
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    loginViewModelViaFlow.uiState.collect { uiState ->
-                        when (uiState) {
-                            is LoginUiState.Success -> {
-                                Snackbar.make(it, "Successfully login", Snackbar.LENGTH_LONG).show()
-                                val action = LoginFragmentDirections.actionLoginToUserFragment()
-                                it.findNavController().navigate(action)
-                            }
-                            is LoginUiState.Error -> {
-                                Snackbar.make(it, "" + uiState.exception.message, Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-            }
+            requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
         }
 
         binding.tvNewToApp.setOnClickListener {
@@ -66,5 +55,37 @@ class LoginFragment : Fragment() {
     }
 
     fun buildLoginRequestObject(email: String, password: String) = LoginRequestModel(email, password)
+
+    private fun launchScreen(view: View, action: NavDirections) {
+        view.findNavController().navigate(action)
+    }
+
+    private fun showSnackBar(view: View, displayText: String) {
+        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun requestLoginApiCall(
+        view: View,
+        loginRequestModel: LoginRequestModel,
+        loginRepoViaFlow: LoginRepoViaFlow
+    ) {
+        loginViewModelViaFlow.loginApiViewModel(loginRequestModel, loginRepoViaFlow)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModelViaFlow.uiState.collect { uiState ->
+                    when (uiState) {
+                        is LoginUiState.Success -> {
+                            showSnackBar(view, getString(R.string.login_successfully))
+                            launchScreen(view, LoginFragmentDirections.actionLoginToUserFragment())
+                        }
+                        is LoginUiState.Error -> {
+                            showSnackBar(view, "" + uiState.exception.message)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }
