@@ -1,8 +1,10 @@
 package com.project.template.repo
 
-import com.project.template.model.LoginResponseModel
-import kotlinx.coroutines.flow.Flow
+import com.project.template.model.LoginRequestModel
 
-class LoginRepoViaFlow(loginRDSViaFlow: LoginRDSViaFlow) {
-    val loginResponseModel: Flow<LoginResponseModel?> = loginRDSViaFlow.loginApiCall
+class LoginRepoViaFlow(var loginRDSViaFlow: LoginRDSViaFlow) {
+
+    fun fetchLoginApiViaRepo(loginRequestModel: LoginRequestModel) =
+        loginRDSViaFlow.fetchLoginApi(loginRequestModel)
+
 }

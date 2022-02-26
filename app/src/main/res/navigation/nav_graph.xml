@@ -56,8 +56,9 @@
 
     <fragment
             android:id="@+id/userFragment"
-            android:name="com.project.template.ui.user.UserFragment"
+            android:name="com.project.template.ui.main.UserFragment"
             android:label="UserFragment"
             tools:layout="@layout/fragment_user"/>
+    <fragment android:id="@+id/placeholder"/>
 
 </navigation>

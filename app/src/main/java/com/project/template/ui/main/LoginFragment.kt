@@ -1,7 +1,6 @@
 package com.project.template.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentLoginBinding
 import com.project.template.model.LoginRequestModel
 import com.project.template.model.LoginUiState
@@ -34,23 +34,23 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.nextButton.setOnClickListener {
-            /*val action = LoginFragmentDirections.actionLoginToUserFragment()
-            it.findNavController().navigate(action)*/
             val loginWebService = RetrofitClient.instance?.getMyApi()
             val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
             val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
-            loginViewModelViaFlow.loginApiViewModel(loginRepoViaFlow)
+            val loginRequestModel = LoginRequestModel("eve.holt@reqres.in", "cityslicka")
+            loginViewModelViaFlow.loginApiViewModel(loginRequestModel, loginRepoViaFlow)
 
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     loginViewModelViaFlow.uiState.collect { uiState ->
-                        // New value received
                         when (uiState) {
                             is LoginUiState.Success -> {
-                                Log.i("------> ", "" + uiState.loginResponseModel?.token)
+                                Snackbar.make(it, "Successfully login", Snackbar.LENGTH_LONG).show()
+                                val action = LoginFragmentDirections.actionLoginToUserFragment()
+                                it.findNavController().navigate(action)
                             }
                             is LoginUiState.Error -> {
-                                Log.i("------> ", "" + uiState.exception.message)
+                                Snackbar.make(it, "" + uiState.exception.message, Snackbar.LENGTH_LONG).show()
                             }
                         }
                     }
