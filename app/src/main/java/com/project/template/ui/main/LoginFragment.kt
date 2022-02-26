@@ -37,7 +37,8 @@ class LoginFragment : Fragment() {
             val loginWebService = RetrofitClient.instance?.getMyApi()
             val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
             val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
-            val loginRequestModel = LoginRequestModel("eve.holt@reqres.in", "cityslicka")
+            val loginRequestModel =
+                LoginRequestModel(binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString())
             loginViewModelViaFlow.loginApiViewModel(loginRequestModel, loginRepoViaFlow)
 
             lifecycleScope.launch {
