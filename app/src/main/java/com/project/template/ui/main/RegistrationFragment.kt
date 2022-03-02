@@ -46,13 +46,15 @@ class RegistrationFragment : Fragment() {
             val apiWebService = RetrofitClient.instance?.getMyApi()
             val registrationRDSViaFlow = RegistrationRDSViaFlow(apiWebService)
             val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
-            val registrationRequestModel = RegistrationRequestModel(
-                binding.etUsernameRegistration.text.toString(),
+            val registrationRequestModel = buildRegisterRequestObject(
+                binding.etEmail.text.toString(),
                 binding.etPasswordRegistration.text.toString()
             )
             requestApiCall(view, registrationRequestModel, registrationRepoViaFlow)
         }
     }
+
+    private fun buildRegisterRequestObject(email: String, password: String) = RegistrationRequestModel(email, password)
 
     private fun launchScreen(view: View, action: NavDirections) {
         view.findNavController().navigate(action)
@@ -73,8 +75,12 @@ class RegistrationFragment : Fragment() {
                 registrationViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is RegistrationUiState.Success -> {
-                            showSnackBar(view, getString(R.string.register_successfully))
-                            launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserFragment())
+                            if (uiState.registrationResponseModel?.token?.isNotEmpty() == true) {
+                                showSnackBar(view, getString(R.string.register_successfully))
+                                launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserFragment())
+                            } else {
+                                showSnackBar(view, "token is empty")
+                            }
                         }
                         is RegistrationUiState.Error -> {
                             showSnackBar(view, "" + uiState.exception.message)

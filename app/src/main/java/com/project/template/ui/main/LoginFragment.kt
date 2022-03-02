@@ -39,11 +39,9 @@ class LoginFragment : Fragment() {
             val loginWebService = RetrofitClient.instance?.getMyApi()
             val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
             val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
-            val loginRequestModel =
-                buildLoginRequestObject(
-                    binding.etUsernameLogin.text.toString(),
-                    binding.etPasswordLogin.text.toString()
-                )
+            val loginRequestModel = buildLoginRequestObject(
+                binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
+            )
 
             requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
         }
@@ -54,7 +52,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun buildLoginRequestObject(email: String, password: String) = LoginRequestModel(email, password)
+    private fun buildLoginRequestObject(email: String, password: String) = LoginRequestModel(email, password)
 
     private fun launchScreen(view: View, action: NavDirections) {
         view.findNavController().navigate(action)
@@ -76,8 +74,13 @@ class LoginFragment : Fragment() {
                 loginViewModelViaFlow.uiState.collect { uiState ->
                     when (uiState) {
                         is LoginUiState.Success -> {
-                            showSnackBar(view, getString(R.string.login_successfully))
-                            launchScreen(view, LoginFragmentDirections.actionLoginToUserFragment())
+                            val token = uiState.loginResponseModel?.token
+                            if (token?.isNotEmpty() == true) {
+                                showSnackBar(view, getString(R.string.login_successfully))
+                                launchScreen(view, LoginFragmentDirections.actionLoginToUserFragment())
+                            } else {
+                                showSnackBar(view, "token is empty")
+                            }
                         }
                         is LoginUiState.Error -> {
                             showSnackBar(view, "" + uiState.exception.message)
