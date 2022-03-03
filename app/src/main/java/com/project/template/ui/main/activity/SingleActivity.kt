@@ -1,4 +1,4 @@
-package com.project.template.ui.main
+package com.project.template.ui.main.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import com.project.template.R

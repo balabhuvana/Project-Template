@@ -1,4 +1,4 @@
-package com.project.template.ui.main
+package com.project.template.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,8 +17,9 @@ import com.project.template.databinding.FragmentRegistrationBinding
 import com.project.template.model.RegistrationRequestModel
 import com.project.template.model.RegistrationUiState
 import com.project.template.network.RetrofitClient
-import com.project.template.repo.registration.RegistrationRDSViaFlow
+import com.project.template.repo.registration.RegistrationRdsViaFlow
 import com.project.template.repo.registration.RegistrationRepoViaFlow
+import com.project.template.ui.main.viewmodels.RegistrationViewModelViaFlow
 import kotlinx.coroutines.launch
 
 class RegistrationFragment : Fragment() {
@@ -44,7 +45,7 @@ class RegistrationFragment : Fragment() {
 
         binding.registerButton.setOnClickListener {
             val apiWebService = RetrofitClient.instance?.getMyApi()
-            val registrationRDSViaFlow = RegistrationRDSViaFlow(apiWebService)
+            val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
             val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
             val registrationRequestModel = buildRegisterRequestObject(
                 binding.etEmail.text.toString(),

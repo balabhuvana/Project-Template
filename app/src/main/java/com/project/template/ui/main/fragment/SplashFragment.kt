@@ -1,4 +1,4 @@
-package com.project.template.ui.main
+package com.project.template.ui.main.fragment
 
 
 import android.os.Bundle

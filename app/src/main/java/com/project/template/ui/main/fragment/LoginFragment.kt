@@ -1,4 +1,4 @@
-package com.project.template.ui.main
+package com.project.template.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +19,7 @@ import com.project.template.model.LoginUiState
 import com.project.template.network.RetrofitClient
 import com.project.template.repo.login.LoginRDSViaFlow
 import com.project.template.repo.login.LoginRepoViaFlow
+import com.project.template.ui.main.viewmodels.LoginViewModelViaFlow
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {

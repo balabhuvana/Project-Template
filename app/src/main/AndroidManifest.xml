@@ -13,7 +13,7 @@
             android:networkSecurityConfig="@xml/network_security_config"
             android:supportsRtl="true"
             android:theme="@style/Theme.ProjectTemplate">
-        <activity android:name=".ui.main.SingleActivity"
+        <activity android:name=".ui.main.activity.SingleActivity"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
