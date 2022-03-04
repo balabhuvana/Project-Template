@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageView
+            android:id="@+id/ivUserImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/dp_100"
+            android:padding="@dimen/dp_5"
+            android:layout_height="@dimen/dp_100"
+            android:contentDescription="@string/app_name"/>
+
+    <TextView
+            android:id="@+id/tvFirstName"
+            app:layout_constraintStart_toEndOf="@+id/ivUserImage"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/register_email"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tvLastName"
+            app:layout_constraintStart_toEndOf="@+id/ivUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvFirstName"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/register_email"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tvEmail"
+            app:layout_constraintStart_toEndOf="@+id/ivUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvLastName"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/register_email"
+            android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

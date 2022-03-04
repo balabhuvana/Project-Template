@@ -61,7 +61,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
     // Flows
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha03")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -73,4 +73,11 @@ dependencies {
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
+    // Recycler view
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    // For control over item selection of both touch and mouse driven selection
+    implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+
+    // Picasso
+    implementation ('com.squareup.picasso:picasso:2.71828')
 }

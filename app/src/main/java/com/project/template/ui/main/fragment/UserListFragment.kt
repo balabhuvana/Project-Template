@@ -10,12 +10,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.UserUIState
 import com.project.template.network.RetrofitClient
 import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
 import kotlinx.coroutines.launch
 
@@ -23,6 +26,7 @@ class UserListFragment : Fragment() {
 
     private lateinit var fragmentUserBinding: FragmentUserBinding
     private val userListViewModel: UserListViewModel by activityViewModels()
+    private lateinit var userListRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +40,7 @@ class UserListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentUserBinding.btnSampleClick.setOnClickListener {
-            fetchUserList(it)
-        }
+        fetchUserList(view)
     }
 
     private fun fetchUserList(view: View) {
@@ -50,10 +52,16 @@ class UserListFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userListViewModel.uiState.collect {
+                userListViewModel.uiState.collect { it ->
                     when (it) {
                         is UserUIState.Success -> {
                             Log.i("------>", "User list${it.userListRoot?.userModelList}")
+                            it.userListRoot?.userModelList?.let {
+                                val userListAdapter = UserListAdapter(it)
+                                userListRecyclerView = fragmentUserBinding.userRecyclerView
+                                userListRecyclerView.adapter = userListAdapter
+                                userListRecyclerView.layoutManager = LinearLayoutManager(activity)
+                            }
                         }
                         is UserUIState.Failure -> {
                             showSnackBar(view, it.exception.message.toString())
