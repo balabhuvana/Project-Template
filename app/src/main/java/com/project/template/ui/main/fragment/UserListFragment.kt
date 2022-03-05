@@ -55,9 +55,8 @@ class UserListFragment : Fragment() {
                 userListViewModel.uiState.collect { it ->
                     when (it) {
                         is UserUIState.Success -> {
-                            Log.i("------>", "User list${it.userListRoot?.userModelList}")
-                            it.userListRoot?.userModelList?.let {
-                                val userListAdapter = UserListAdapter(it)
+                            it.userListRoot?.userModelList?.let { userList ->
+                                val userListAdapter = UserListAdapter(userList)
                                 userListRecyclerView = fragmentUserBinding.userRecyclerView
                                 userListRecyclerView.adapter = userListAdapter
                                 userListRecyclerView.layoutManager = LinearLayoutManager(activity)
