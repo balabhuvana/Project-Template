@@ -8,7 +8,7 @@ import com.project.template.databinding.UserListViewRowBinding
 import com.project.template.model.User
 import com.squareup.picasso.Picasso
 
-class UserListAdapter(var userModelList: List<User>) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
+class UserListAdapter(private var userModelList: List<User>) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
 
     inner class UserListViewHolder(val binding: UserListViewRowBinding) :
         RecyclerView.ViewHolder(binding.root)
