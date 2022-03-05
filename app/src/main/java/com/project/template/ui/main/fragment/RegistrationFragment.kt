@@ -78,7 +78,7 @@ class RegistrationFragment : Fragment() {
                         is RegistrationUiState.Success -> {
                             if (uiState.registrationResponseModel?.token?.isNotEmpty() == true) {
                                 showSnackBar(view, getString(R.string.register_successfully))
-                                launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserFragment())
+                                launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserListFragment())
                             } else {
                                 showSnackBar(view, "token is empty")
                             }

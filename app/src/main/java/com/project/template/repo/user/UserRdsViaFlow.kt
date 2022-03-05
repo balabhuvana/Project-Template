@@ -10,4 +10,9 @@ class UserRdsViaFlow(var apiWebService: ApiWebService?) {
             emit(apiWebService?.fetchUserList())
         }
 
+    fun fetchUserDetailRdsCall(userId: String) =
+        flow {
+            val user = apiWebService?.fetchUserDetail(userId)
+            emit(user)
+        }
 }

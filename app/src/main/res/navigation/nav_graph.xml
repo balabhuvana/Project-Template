@@ -30,7 +30,7 @@
 
         <action
                 android:id="@+id/action_Login_to_UserFragment"
-                app:destination="@id/userFragment"
+                app:destination="@id/userListFragment"
                 app:popUpTo="@id/loginFragment"
                 app:popUpToInclusive="true"/>
     </fragment>
@@ -48,17 +48,31 @@
                 app:popUpToInclusive="true"/>
 
         <action
-                android:id="@+id/action_Registration_to_UserFragment"
-                app:destination="@id/userFragment"
+                android:id="@+id/action_Registration_to_UserListFragment"
+                app:destination="@id/userListFragment"
                 app:popUpTo="@id/loginFragment"
                 app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
-            android:id="@+id/userFragment"
+            android:id="@+id/userListFragment"
             android:name="com.project.template.ui.main.fragment.UserListFragment"
             android:label="UserFragment"
-            tools:layout="@layout/fragment_user"/>
-    <fragment android:id="@+id/placeholder"/>
+            tools:layout="@layout/fragment_user">
+        <action android:id="@+id/action_UserListFragment_to_UserDetailFragment"
+                app:destination="@id/userDetailFragment"/>
+    </fragment>
+
+    <fragment android:id="@+id/userDetailFragment"
+              android:name="com.project.template.ui.main.fragment.UserDetailFragment"
+              android:label="fragment_user_detail"
+              tools:layout="@layout/fragment_user_detail">
+
+        <argument
+                android:name="userIdArgs"
+                app:argType="integer"
+                android:defaultValue="0"/>
+
+    </fragment>
 
 </navigation>

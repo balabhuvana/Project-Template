@@ -4,4 +4,5 @@ class UserRepoViaFlow(var userRdsViaFlow: UserRdsViaFlow) {
 
     fun fetchUserListViaRepo() = userRdsViaFlow.fetchUserListRDSCall()
 
+    fun fetchUserDetailRepo(userId: String) = userRdsViaFlow.fetchUserDetailRdsCall(userId)
 }

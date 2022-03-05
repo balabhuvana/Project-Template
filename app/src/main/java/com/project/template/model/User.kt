@@ -38,7 +38,14 @@ data class UserListRoot(
     var userModelList: List<User>? = null
 )
 
-sealed class UserUIState() {
+data class SingleUser(@SerializedName("data") var user: User?)
+
+sealed class UserUIState {
     data class Success(var userListRoot: UserListRoot?) : UserUIState()
     data class Failure(var exception: Throwable) : UserUIState()
+}
+
+sealed class UserDetailUIState {
+    data class Success(var singleUser: SingleUser?) : UserDetailUIState()
+    data class Failure(var exception: Throwable) : UserDetailUIState()
 }
