@@ -44,6 +44,7 @@ class RegistrationFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            showOrHideProgressBar(View.VISIBLE)
             val apiWebService = RetrofitClient.instance?.getMyApi()
             val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
             val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
@@ -78,17 +79,26 @@ class RegistrationFragment : Fragment() {
                         is RegistrationUiState.Success -> {
                             if (uiState.registrationResponseModel?.token?.isNotEmpty() == true) {
                                 showSnackBar(view, getString(R.string.register_successfully))
-                                launchScreen(view, RegistrationFragmentDirections.actionRegistrationToUserListFragment())
+                                launchScreen(
+                                    view,
+                                    RegistrationFragmentDirections.actionRegistrationToUserListFragment()
+                                )
+                                showOrHideProgressBar(View.GONE)
                             } else {
                                 showSnackBar(view, "token is empty")
                             }
                         }
                         is RegistrationUiState.Error -> {
                             showSnackBar(view, "" + uiState.exception.message)
+                            showOrHideProgressBar(View.GONE)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showOrHideProgressBar(showOrHide: Int) {
+        _binding?.registrationProgressBar?.visibility = showOrHide
     }
 }

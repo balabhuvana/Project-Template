@@ -119,4 +119,14 @@
             android:hint="@string/all_ready_registered"
             android:textColor="@color/colorPrimary"/>
 
+    <ProgressBar
+            android:id="@+id/registrationProgressBar"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

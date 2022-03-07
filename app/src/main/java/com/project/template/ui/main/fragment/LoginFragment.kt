@@ -37,6 +37,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.nextButton.setOnClickListener {
+            showOrHideProgressBar(View.VISIBLE)
             val loginWebService = RetrofitClient.instance?.getMyApi()
             val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
             val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
@@ -79,17 +80,23 @@ class LoginFragment : Fragment() {
                             if (token?.isNotEmpty() == true) {
                                 showSnackBar(view, getString(R.string.login_successfully))
                                 launchScreen(view, LoginFragmentDirections.actionLoginToUserFragment())
+                                showOrHideProgressBar(View.GONE)
                             } else {
                                 showSnackBar(view, "token is empty")
                             }
                         }
                         is LoginUiState.Error -> {
                             showSnackBar(view, "" + uiState.exception.message)
+                            showOrHideProgressBar(View.GONE)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showOrHideProgressBar(showOrHide: Int) {
+        _binding?.loginProgressBar?.visibility = showOrHide
     }
 
 }
