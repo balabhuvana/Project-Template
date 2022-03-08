@@ -1,21 +1,30 @@
 package com.project.template.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "user_table")
 data class User(
 
     @SerializedName("id")
+    @PrimaryKey(autoGenerate = true)
     var userId: Int = 0,
 
+    @ColumnInfo("email")
     @SerializedName("email")
     var userEmail: String? = null,
 
+    @ColumnInfo("first_name")
     @SerializedName("first_name")
     var userFirstName: String = "",
 
+    @ColumnInfo("last_name")
     @SerializedName("last_name")
     var userLastName: String = "",
 
+    @ColumnInfo("avatar")
     @SerializedName("avatar")
     var userAvatar: String = ""
 )

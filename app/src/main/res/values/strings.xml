@@ -22,4 +22,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_successfully">You Have Successfully Logged in</string>
     <string name="register_successfully">You Have Successfully register in</string>
+    <string name="insert">Insert</string>
+    <string name="select">Select</string>
 </resources>
