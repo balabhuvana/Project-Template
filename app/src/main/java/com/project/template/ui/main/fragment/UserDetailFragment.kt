@@ -41,6 +41,7 @@ class UserDetailFragment : Fragment() {
         val safeArgs: UserDetailFragmentArgs by navArgs()
         val userId = safeArgs.userIdArgs
 
+        showOrHideProgressBar(View.VISIBLE)
         fetchUserDetail(view, userId.toString())
     }
 
@@ -55,12 +56,13 @@ class UserDetailFragment : Fragment() {
                 userDetailViewModel.uiState.collect() {
                     when (it) {
                         is UserDetailUIState.Success -> {
-                            if (it.singleUser?.user?.userId != 0) {
+                            if (it.singleUser?.user != null) {
                                 setUserData(it.singleUser?.user)
                             }
                         }
                         is UserDetailUIState.Failure -> {
                             showSnackBar(view, it.exception.message.toString())
+                            showOrHideProgressBar(View.GONE)
                         }
                     }
                 }
@@ -85,4 +87,7 @@ class UserDetailFragment : Fragment() {
         Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
     }
 
+    private fun showOrHideProgressBar(showOrHide: Int) {
+        userDetailBinding.detailProgressBar.visibility = showOrHide
+    }
 }
