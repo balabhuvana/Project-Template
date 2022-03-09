@@ -10,7 +10,7 @@ data class User(
 
     @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
-    var userId: Int = 0,
+    var id: Int = 0,
 
     @ColumnInfo("email")
     @SerializedName("email")

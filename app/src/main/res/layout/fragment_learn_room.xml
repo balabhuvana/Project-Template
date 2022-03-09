@@ -6,11 +6,31 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    tools:context=".ui.main.fragment.LearnRoomFragment">
 
+    <androidx.appcompat.widget.AppCompatEditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/etFirstName"
+            android:text="@string/arun"
+            android:hint="@string/first_name"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etFirstName"
+            android:id="@+id/etLastName"
+            android:text="@string/kumar"
+            android:hint="@string/last_name"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"/>
+
     <Button
             android:id="@+id/btnInsert"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etLastName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/insert"/>
@@ -23,5 +43,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/select"
             app:layout_constraintTop_toBottomOf="@+id/btnInsert"/>
+
+    <Button
+            android:id="@+id/btnListen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/table_listen"
+            app:layout_constraintTop_toBottomOf="@+id/btnSelect"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

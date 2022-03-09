@@ -35,7 +35,7 @@ class UserListAdapter(private var userModelList: List<User>) :
             .into(holder.binding.ivUserImage)
 
         holder.binding.root.setOnClickListener {
-            val userIdArgs = userModelList[position].userId
+            val userIdArgs = userModelList[position].id
             val action = UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(userIdArgs)
             launchScreen(it, action)
         }

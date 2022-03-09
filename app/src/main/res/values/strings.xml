@@ -24,4 +24,9 @@
     <string name="register_successfully">You Have Successfully register in</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
+    <string name="table_listen">Table Listen</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="arun">arun</string>
+    <string name="kumar">kumar</string>
 </resources>

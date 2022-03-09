@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.project.template.databinding.FragmentLearnRoomBinding
 import com.project.template.model.User
+import com.project.template.room.UserDao
 import com.project.template.room.UserDatabase
 import kotlinx.coroutines.launch
 
@@ -36,7 +37,10 @@ class LearnRoomFragment : Fragment() {
         val userDao = userDatabase.userDao()
 
         binding.btnInsert.setOnClickListener {
-            val user = User(userEmail = "arun@gmail.com", userFirstName = "Arun", userLastName = "Kumar")
+            val firstName = binding.etFirstName.text.toString()
+            val lastName = binding.etLastName.text.toString()
+            val email = "$firstName@gmail.com"
+            val user = User(userEmail = email, userFirstName = firstName, userLastName = lastName)
             lifecycleScope.launch {
                 userDao.insertUser(user)
             }
@@ -44,8 +48,21 @@ class LearnRoomFragment : Fragment() {
 
         binding.btnSelect.setOnClickListener {
             lifecycleScope.launch {
-                val user = userDao.findUserByName(firstName = "Arun", lastName = "Kumar")
-                Log.i("----> ", "User: $user")
+                userDao.findUserByName(firstName = "Arun", lastName = "Kumar").collect {
+                    Log.i("----> ", "User: ${it.userEmail}")
+                }
+            }
+        }
+
+        binding.btnListen.setOnClickListener {
+            listenTableChanges(userDao)
+        }
+    }
+
+    private fun listenTableChanges(userDao: UserDao) {
+        lifecycleScope.launch {
+            userDao.getAllUser().collect {
+                Log.i("----->", "Row inserted triggered list: $it")
             }
         }
     }
