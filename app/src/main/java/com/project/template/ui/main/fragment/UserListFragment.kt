@@ -1,7 +1,6 @@
 package com.project.template.ui.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.UserUIState
 import com.project.template.network.RetrofitClient
@@ -20,6 +18,7 @@ import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
+import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
 class UserListFragment : Fragment() {
@@ -63,16 +62,12 @@ class UserListFragment : Fragment() {
                             }
                         }
                         is UserUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
     }
 
 }

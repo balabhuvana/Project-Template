@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.project.template.databinding.FragmentSplashBinding
+import com.project.template.utils.CommonUtils
 
 class SplashFragment : Fragment() {
 
@@ -34,19 +35,15 @@ class SplashFragment : Fragment() {
 
     private fun launchLoginFragment() {
 
-        showOrHideProgressBar(View.VISIBLE)
+        CommonUtils.showOrHideProgressBar(binding.splashProgressBar, View.VISIBLE)
         Handler().postDelayed({
             val navDirections: NavDirections =
                 SplashFragmentDirections.actionSplashToLoginFragment()
             val navController: NavController = findNavController()
             navController.navigate(navDirections)
-            showOrHideProgressBar(View.GONE)
+            CommonUtils.showOrHideProgressBar(binding.splashProgressBar, View.GONE)
         }, 2000)
 
-    }
-
-    private fun showOrHideProgressBar(showOrHide: Int) {
-        _binding?.splashProgressBar?.visibility = showOrHide
     }
 
 }

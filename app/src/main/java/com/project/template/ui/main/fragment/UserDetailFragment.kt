@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.project.template.R
 import com.project.template.databinding.FragmentUserDetailBinding
 import com.project.template.model.User
@@ -19,6 +18,7 @@ import com.project.template.network.RetrofitClient
 import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
 import com.project.template.ui.main.viewmodels.UserDetailViewModel
+import com.project.template.utils.CommonUtils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,7 @@ class UserDetailFragment : Fragment() {
         val safeArgs: UserDetailFragmentArgs by navArgs()
         val userId = safeArgs.userIdArgs
 
-        showOrHideProgressBar(View.VISIBLE)
+        CommonUtils.showOrHideProgressBar(userDetailBinding.detailProgressBar, View.VISIBLE)
         fetchUserDetail(view, userId.toString())
     }
 
@@ -61,14 +61,13 @@ class UserDetailFragment : Fragment() {
                             }
                         }
                         is UserDetailUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
-                            showOrHideProgressBar(View.GONE)
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showOrHideProgressBar(userDetailBinding.detailProgressBar, View.GONE)
                         }
                     }
                 }
             }
         }
-
     }
 
     private fun setUserData(user: User?) {
@@ -81,13 +80,5 @@ class UserDetailFragment : Fragment() {
             .placeholder(R.drawable.ic_baseline_account_circle_24)
             .error(R.drawable.ic_baseline_account_circle_24)
             .into(userDetailBinding.ivUserImage)
-    }
-
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showOrHideProgressBar(showOrHide: Int) {
-        userDetailBinding.detailProgressBar.visibility = showOrHide
     }
 }

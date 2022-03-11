@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.project.template.R
 import com.project.template.databinding.FragmentRegistrationBinding
 import com.project.template.model.RegistrationRequestModel
@@ -20,6 +19,7 @@ import com.project.template.network.RetrofitClient
 import com.project.template.repo.registration.RegistrationRdsViaFlow
 import com.project.template.repo.registration.RegistrationRepoViaFlow
 import com.project.template.ui.main.viewmodels.RegistrationViewModelViaFlow
+import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
 class RegistrationFragment : Fragment() {
@@ -44,7 +44,7 @@ class RegistrationFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            showOrHideProgressBar(View.VISIBLE)
+            CommonUtils.showOrHideProgressBar(binding.registrationProgressBar, View.VISIBLE)
             val apiWebService = RetrofitClient.instance?.getMyApi()
             val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
             val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
@@ -62,10 +62,6 @@ class RegistrationFragment : Fragment() {
         view.findNavController().navigate(action)
     }
 
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
-    }
-
     private fun requestApiCall(
         view: View,
         registrationRequestModel: RegistrationRequestModel,
@@ -78,19 +74,19 @@ class RegistrationFragment : Fragment() {
                     when (uiState) {
                         is RegistrationUiState.Success -> {
                             if (uiState.registrationResponseModel?.token?.isNotEmpty() == true) {
-                                showSnackBar(view, getString(R.string.register_successfully))
+                                CommonUtils.showSnackBar(view, getString(R.string.register_successfully))
                                 launchScreen(
                                     view,
                                     RegistrationFragmentDirections.actionRegistrationToUserListFragment()
                                 )
-                                showOrHideProgressBar(View.GONE)
+                                CommonUtils.showOrHideProgressBar(binding.registrationProgressBar, View.GONE)
                             } else {
-                                showSnackBar(view, "token is empty")
+                                CommonUtils.showSnackBar(view, "token is empty")
                             }
                         }
                         is RegistrationUiState.Error -> {
-                            showSnackBar(view, "" + uiState.exception.message)
-                            showOrHideProgressBar(View.GONE)
+                            CommonUtils.showSnackBar(view, "" + uiState.exception.message)
+                            CommonUtils.showOrHideProgressBar(binding.registrationProgressBar, View.GONE)
                         }
                     }
                 }
@@ -98,7 +94,4 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-    private fun showOrHideProgressBar(showOrHide: Int) {
-        _binding?.registrationProgressBar?.visibility = showOrHide
-    }
 }
