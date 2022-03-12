@@ -43,15 +43,19 @@ class RegistrationFragment : BaseFragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            CommonUtils.showOrHideProgressBar(binding.registrationProgressBar, View.VISIBLE)
-            val apiWebService = RetrofitClient.instance?.getMyApi()
-            val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
-            val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
-            val registrationRequestModel = buildRegisterRequestObject(
-                binding.etEmail.text.toString(),
-                binding.etPasswordRegistration.text.toString()
-            )
-            requestApiCall(view, registrationRequestModel, registrationRepoViaFlow)
+            if (isNetworkAvailable) {
+                CommonUtils.showOrHideProgressBar(binding.registrationProgressBar, View.VISIBLE)
+                val apiWebService = RetrofitClient.instance?.getMyApi()
+                val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
+                val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
+                val registrationRequestModel = buildRegisterRequestObject(
+                    binding.etEmail.text.toString(),
+                    binding.etPasswordRegistration.text.toString()
+                )
+                requestApiCall(view, registrationRequestModel, registrationRepoViaFlow)
+            } else {
+                CommonUtils.showSnackBar(view, getString(R.string.check_internet))
+            }
         }
     }
 

@@ -36,15 +36,19 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.nextButton.setOnClickListener {
-            CommonUtils.showOrHideProgressBar(binding.loginProgressBar, View.VISIBLE)
-            val loginWebService = RetrofitClient.instance?.getMyApi()
-            val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
-            val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
-            val loginRequestModel = buildLoginRequestObject(
-                binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
-            )
+            if (isNetworkAvailable) {
+                CommonUtils.showOrHideProgressBar(binding.loginProgressBar, View.VISIBLE)
+                val loginWebService = RetrofitClient.instance?.getMyApi()
+                val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
+                val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
+                val loginRequestModel = buildLoginRequestObject(
+                    binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
+                )
 
-            requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
+                requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
+            } else {
+                CommonUtils.showSnackBar(view, getString(R.string.check_internet))
+            }
         }
 
         binding.tvNewToApp.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.project.template.ui.main.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,10 @@ import com.project.template.R
 import com.project.template.databinding.UserListViewRowBinding
 import com.project.template.model.User
 import com.project.template.ui.main.fragment.UserListFragmentDirections
+import com.project.template.utils.CommonUtils
 import com.squareup.picasso.Picasso
 
-class UserListAdapter(private var userModelList: List<User>) :
+class UserListAdapter(var context: Context, private var userModelList: List<User>) :
     RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
 
     inner class UserListViewHolder(val binding: UserListViewRowBinding) :
@@ -35,9 +37,13 @@ class UserListAdapter(private var userModelList: List<User>) :
             .into(holder.binding.ivUserImage)
 
         holder.binding.root.setOnClickListener {
-            val userIdArgs = userModelList[position].userId
-            val action = UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(userIdArgs)
-            launchScreen(it, action)
+            if (CommonUtils.checkInternetAvailability(context)) {
+                val userIdArgs = userModelList[position].userId
+                val action = UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(userIdArgs)
+                launchScreen(it, action)
+            } else {
+                CommonUtils.showSnackBar(it, context.getString(R.string.check_internet))
+            }
         }
 
     }

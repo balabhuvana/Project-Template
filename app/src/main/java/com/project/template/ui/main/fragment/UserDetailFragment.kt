@@ -52,12 +52,13 @@ class UserDetailFragment : BaseFragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userDetailViewModel.uiState.collect() {
+                userDetailViewModel.uiState.collect {
                     when (it) {
                         is UserDetailUIState.Success -> {
                             if (it.singleUser?.user != null) {
                                 setUserData(it.singleUser?.user)
                             }
+                            CommonUtils.showOrHideProgressBar(userDetailBinding.detailProgressBar, View.GONE)
                         }
                         is UserDetailUIState.Failure -> {
                             CommonUtils.showSnackBar(view, it.exception.message.toString())

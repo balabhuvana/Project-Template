@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.template.R
 import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.UserUIState
 import com.project.template.network.RetrofitClient
@@ -38,7 +39,11 @@ class UserListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchUserList(view)
+        if (isNetworkAvailable) {
+            fetchUserList(view)
+        } else {
+            CommonUtils.showSnackBar(view, getString(R.string.check_internet))
+        }
     }
 
     private fun fetchUserList(view: View) {
@@ -54,7 +59,7 @@ class UserListFragment : BaseFragment() {
                     when (it) {
                         is UserUIState.Success -> {
                             it.userListRoot?.userModelList?.let { userList ->
-                                val userListAdapter = UserListAdapter(userList)
+                                val userListAdapter = UserListAdapter(context!!, userList)
                                 userListRecyclerView = fragmentUserBinding.userRecyclerView
                                 userListRecyclerView.adapter = userListAdapter
                                 userListRecyclerView.layoutManager = LinearLayoutManager(activity)
