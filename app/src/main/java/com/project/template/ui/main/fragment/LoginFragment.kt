@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +21,7 @@ import com.project.template.ui.main.viewmodels.LoginViewModelViaFlow
 import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!

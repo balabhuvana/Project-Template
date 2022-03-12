@@ -23,6 +23,8 @@ open class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isNetworkAvailable = CommonUtils.checkInternetAvailability(context)
+
         NetworkListener().networkEvent.observe(
             viewLifecycleOwner
         ) { event ->

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +21,7 @@ import com.project.template.utils.CommonUtils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
-class UserDetailFragment : Fragment() {
+class UserDetailFragment : BaseFragment() {
 
     private val userDetailViewModel: UserDetailViewModel by activityViewModels()
     private lateinit var userDetailBinding: FragmentUserDetailBinding

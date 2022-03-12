@@ -6,14 +6,13 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.project.template.databinding.FragmentSplashBinding
 import com.project.template.utils.CommonUtils
 
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
 
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!

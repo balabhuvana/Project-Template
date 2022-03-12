@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +20,7 @@ import com.project.template.ui.main.viewmodels.UserListViewModel
 import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
-class UserListFragment : Fragment() {
+class UserListFragment : BaseFragment() {
 
     private lateinit var fragmentUserBinding: FragmentUserBinding
     private val userListViewModel: UserListViewModel by activityViewModels()

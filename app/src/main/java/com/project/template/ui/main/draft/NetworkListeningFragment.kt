@@ -24,7 +24,7 @@ class NetworkListeningFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnCheckNetwork.setOnClickListener {
-            CommonUtils.showSnackBar(view, isNetworkAvailable.toString())
+            CommonUtils.showSnackBar(view, CommonUtils.checkInternetAvailability(context).toString())
         }
     }
 
