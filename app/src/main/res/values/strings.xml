@@ -23,10 +23,15 @@
     <string name="login_successfully">You Have Successfully Logged in</string>
     <string name="register_successfully">You Have Successfully register in</string>
     <string name="insert">Insert</string>
-    <string name="select">Select</string>
+    <string name="get_user_by_id">Get User By ID</string>
+    <string name="get_all_user">Get All User</string>
+    <string name="delete_user_by_id">Delete User By ID</string>
+    <string name="delete_all_user">Delete All User</string>
     <string name="table_listen">Table Listen</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="arun">arun</string>
     <string name="kumar">kumar</string>
+    <string name="select_all">Select All</string>
+    <string name="enter_user_id">Enter user id</string>
 </resources>

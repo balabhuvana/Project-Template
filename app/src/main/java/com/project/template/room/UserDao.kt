@@ -14,10 +14,16 @@ interface UserDao {
     suspend fun insertUser(user: User)
 
     @Delete
-    suspend fun removeUser(user: User)
+    suspend fun deleteUserByModel(user: User)
+
+    @Query("DELETE FROM user_table WHERE id = :id")
+    suspend fun deleteUserByID(id: Int)
+
+    @Query("DELETE FROM user_table")
+    suspend fun deleteAllUser()
 
     @Query("SELECT * FROM user_table WHERE id = :id")
-    fun findUserId(id: Int): Flow<User>
+    fun findUserById(id: Int): Flow<User>
 
     @Query("SELECT * FROM user_table WHERE first_name LIKE :firstName AND " + "last_name LIKE :lastName LIMIT 1")
     fun findUserByName(firstName: String, lastName: String): Flow<User>

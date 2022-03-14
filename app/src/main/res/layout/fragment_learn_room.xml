@@ -26,23 +26,60 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"/>
 
+    <androidx.appcompat.widget.AppCompatEditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etLastName"
+            android:id="@+id/etUserId"
+            android:hint="@string/enter_user_id"
+            android:inputType="number"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"/>
+
     <Button
             android:id="@+id/btnInsert"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etLastName"
+            app:layout_constraintTop_toBottomOf="@+id/etUserId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/insert"/>
 
     <Button
-            android:id="@+id/btnSelect"
+            android:id="@+id/btnGetUserById"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/select"
+            android:text="@string/get_user_by_id"
             app:layout_constraintTop_toBottomOf="@+id/btnInsert"/>
+
+    <Button
+            android:id="@+id/btnGetAllUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/get_all_user"
+            app:layout_constraintTop_toBottomOf="@+id/btnGetUserById"/>
+
+    <Button
+            android:id="@+id/btnDeleteUserById"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/delete_user_by_id"
+            app:layout_constraintTop_toBottomOf="@+id/btnGetAllUser"/>
+
+    <Button
+            android:id="@+id/btnDeleteAllUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/delete_all_user"
+            app:layout_constraintTop_toBottomOf="@+id/btnDeleteUserById"/>
 
     <Button
             android:id="@+id/btnListen"
@@ -51,6 +88,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/table_listen"
-            app:layout_constraintTop_toBottomOf="@+id/btnSelect"/>
+            app:layout_constraintTop_toBottomOf="@+id/btnDeleteAllUser"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

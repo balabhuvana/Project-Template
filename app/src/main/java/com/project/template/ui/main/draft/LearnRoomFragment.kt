@@ -1,4 +1,4 @@
-package com.project.template.ui.main.fragment
+package com.project.template.ui.main.draft
 
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +36,8 @@ class LearnRoomFragment : Fragment() {
         ).build()
         val userDao = userDatabase.userDao()
 
+        listenTableChanges(userDao)
+
         binding.btnInsert.setOnClickListener {
             val firstName = binding.etFirstName.text.toString()
             val lastName = binding.etLastName.text.toString()
@@ -46,16 +48,38 @@ class LearnRoomFragment : Fragment() {
             }
         }
 
-        binding.btnSelect.setOnClickListener {
+        binding.btnGetUserById.setOnClickListener {
             lifecycleScope.launch {
-                userDao.findUserByName(firstName = "Arun", lastName = "Kumar").collect {
-                    Log.i("----> ", "User: ${it.userEmail}")
+                val userId = binding.etUserId.text.toString()
+                if (userId.isNotEmpty()) {
+                    userDao.findUserById(userId.toInt()).collect {
+                        Log.i("----> ", "User: ${it.userEmail}")
+                    }
                 }
             }
         }
 
-        binding.btnListen.setOnClickListener {
-            listenTableChanges(userDao)
+        binding.btnGetAllUser.setOnClickListener {
+            lifecycleScope.launch {
+                userDao.getAllUser().collect() {
+                    Log.i("----> ", "User: $it")
+                }
+            }
+        }
+
+        binding.btnDeleteUserById.setOnClickListener {
+            lifecycleScope.launch {
+                val userId = binding.etUserId.text.toString()
+                if (userId.isNotEmpty()) {
+                    userDao.deleteUserByID(userId.toInt())
+                }
+            }
+        }
+
+        binding.btnDeleteAllUser.setOnClickListener {
+            lifecycleScope.launch {
+                userDao.deleteAllUser()
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.project.template.ui.main.fragment
+package com.project.template.ui.main.draft
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
