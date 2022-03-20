@@ -50,7 +50,7 @@ data class UserListRoot(
 data class SingleUser(@SerializedName("data") var user: User?)
 
 sealed class UserUIState {
-    data class Success(var userListRoot: UserListRoot?) : UserUIState()
+    data class Success(var userList: List<User>?) : UserUIState()
     data class Failure(var exception: Throwable) : UserUIState()
 }
 

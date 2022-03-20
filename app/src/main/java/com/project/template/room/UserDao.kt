@@ -1,17 +1,17 @@
 package com.project.template.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.project.template.model.User
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(user: User)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserList(user: List<User>?)
 
     @Delete
     suspend fun deleteUserByModel(user: User)

@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import androidx.room.Room
 import com.google.android.material.snackbar.Snackbar
 import com.project.template.R
 import com.project.template.databinding.FragmentUserDetailBinding
@@ -18,6 +19,7 @@ import com.project.template.model.UserDetailUIState
 import com.project.template.network.RetrofitClient
 import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.room.UserDatabase
 import com.project.template.ui.main.viewmodels.UserDetailViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -38,17 +40,26 @@ class UserDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val userDatabase = Room.databaseBuilder(
+            context!!,
+            UserDatabase::class.java, "database-name"
+        ).build()
+        val userDao = userDatabase.userDao()
+
+
+        val apiWebService = RetrofitClient.instance?.getMyApi()
+        val userRdsViaFlow = UserRdsViaFlow(userDao, apiWebService)
+        val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
+
         val safeArgs: UserDetailFragmentArgs by navArgs()
         val userId = safeArgs.userIdArgs
 
         showOrHideProgressBar(View.VISIBLE)
-        fetchUserDetail(view, userId.toString())
+        fetchUserDetail(view, userId.toString(), userRepoViaFlow)
     }
 
-    private fun fetchUserDetail(view: View, userId: String) {
-        val apiWebService = RetrofitClient.instance?.getMyApi()
-        val userRdsViaFlow = UserRdsViaFlow(apiWebService)
-        val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
+    private fun fetchUserDetail(view: View, userId: String, userRepoViaFlow: UserRepoViaFlow) {
+
         userDetailViewModel.fetchUserDetailViaVM(userId, userRepoViaFlow)
 
         lifecycleScope.launch {

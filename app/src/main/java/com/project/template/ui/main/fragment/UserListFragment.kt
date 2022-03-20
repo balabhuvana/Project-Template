@@ -1,7 +1,6 @@
 package com.project.template.ui.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentUserBinding
+import com.project.template.model.User
 import com.project.template.model.UserUIState
 import com.project.template.network.RetrofitClient
 import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.room.UserDatabase
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
 import kotlinx.coroutines.launch
@@ -40,14 +42,43 @@ class UserListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchUserList(view)
-    }
-
-    private fun fetchUserList(view: View) {
+        val userDatabase = Room.databaseBuilder(
+            context!!,
+            UserDatabase::class.java, "database-name"
+        ).build()
+        val userDao = userDatabase.userDao()
 
         val apiWebService = RetrofitClient.instance?.getMyApi()
-        val userRdsViaFlow = UserRdsViaFlow(apiWebService)
+        val userRdsViaFlow = UserRdsViaFlow(userDao, apiWebService)
         val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
+
+        fetchUserListFetchUserListAndSaveInRoomOfflineSupport(view, userRepoViaFlow)
+    }
+
+    private fun fetchUserListFetchUserListAndSaveInRoomOfflineSupport(view: View, userRepoViaFlow: UserRepoViaFlow) {
+        userListViewModel.fetchUserListAndStoreItInRoomViaVM(userRepoViaFlow)
+        userListViewModel.listenUserListOfflineSupportVM(userRepoViaFlow)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userListViewModel.uiState.collect {
+                    when (it) {
+                        is UserUIState.Success -> {
+                            it.userList?.let { userList ->
+                                updateUserListAdapter(userList)
+                            }
+                        }
+                        is UserUIState.Failure -> {
+                            showSnackBar(view, it.exception.message.toString())
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun fetchUserList(view: View, userRepoViaFlow: UserRepoViaFlow) {
         userListViewModel.fetchUserList(userRepoViaFlow)
 
         lifecycleScope.launch {
@@ -55,11 +86,8 @@ class UserListFragment : Fragment() {
                 userListViewModel.uiState.collect { it ->
                     when (it) {
                         is UserUIState.Success -> {
-                            it.userListRoot?.userModelList?.let { userList ->
-                                val userListAdapter = UserListAdapter(userList)
-                                userListRecyclerView = fragmentUserBinding.userRecyclerView
-                                userListRecyclerView.adapter = userListAdapter
-                                userListRecyclerView.layoutManager = LinearLayoutManager(activity)
+                            it.userList?.let { userList ->
+                                updateUserListAdapter(userList)
                             }
                         }
                         is UserUIState.Failure -> {
@@ -73,6 +101,13 @@ class UserListFragment : Fragment() {
 
     private fun showSnackBar(view: View, displayText: String) {
         Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun updateUserListAdapter(userList: List<User>) {
+        val userListAdapter = UserListAdapter(userList)
+        userListRecyclerView = fragmentUserBinding.userRecyclerView
+        userListRecyclerView.adapter = userListAdapter
+        userListRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
 }
