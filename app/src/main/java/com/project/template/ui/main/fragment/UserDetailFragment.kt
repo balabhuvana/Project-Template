@@ -55,7 +55,29 @@ class UserDetailFragment : Fragment() {
         val userId = safeArgs.userIdArgs
 
         showOrHideProgressBar(View.VISIBLE)
-        fetchUserDetail(view, userId.toString(), userRepoViaFlow)
+        fetchUserDetailFromRoom(view, userId, userRepoViaFlow)
+    }
+
+    private fun fetchUserDetailFromRoom(view: View, userId: Int, userRepoViaFlow: UserRepoViaFlow) {
+        userDetailViewModel.fetchUserDetailFromRoomVM(userId, userRepoViaFlow)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userDetailViewModel.uiState.collect() {
+                    when (it) {
+                        is UserDetailUIState.Success -> {
+                            if (it.singleUser?.user != null) {
+                                setUserData(it.singleUser?.user)
+                            }
+                        }
+                        is UserDetailUIState.Failure -> {
+                            showSnackBar(view, it.exception.message.toString())
+                            showOrHideProgressBar(View.GONE)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun fetchUserDetail(view: View, userId: String, userRepoViaFlow: UserRepoViaFlow) {

@@ -10,7 +10,6 @@ class UserRdsViaFlow(var userDao: UserDao, var apiWebService: ApiWebService?) {
     fun fetchUserListRDSCall() =
         flow {
             val userList = apiWebService?.fetchUserList()?.userModelList
-            Log.i("-----> ",""+userList)
             emit(userList)
         }
 
@@ -25,4 +24,11 @@ class UserRdsViaFlow(var userDao: UserDao, var apiWebService: ApiWebService?) {
             val user = apiWebService?.fetchUserDetail(userId)
             emit(user)
         }
+
+    suspend fun fetchUserDetailAndSaveItRoomRdsCall(userId: String) {
+        val singleUser = apiWebService?.fetchUserDetail(userId)
+        userDao.insertSingleUser(singleUser)
+    }
+
+    fun fetchUserDetailFromRoomRdsCall(userId: Int) = userDao.findUserById(userId)
 }

@@ -2,6 +2,7 @@ package com.project.template.ui.main.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.template.model.UserDetailUIState
 import com.project.template.model.UserUIState
 import com.project.template.repo.user.UserRepoViaFlow
 import kotlinx.coroutines.flow.MutableStateFlow

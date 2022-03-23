@@ -27,4 +27,15 @@ class UserDetailViewModel : ViewModel() {
         }
     }
 
+    fun fetchUserDetailFromRoomVM(userId: Int, userRepoViaFlow: UserRepoViaFlow) {
+        viewModelScope.launch {
+            userRepoViaFlow.fetchUserDetailFromRoomRepoCall(userId)
+                .catch { exception ->
+                    _uiState.value = UserDetailUIState.Failure(exception)
+                }.collect {
+                    _uiState.value = UserDetailUIState.Success(it)
+                }
+        }
+    }
+
 }
