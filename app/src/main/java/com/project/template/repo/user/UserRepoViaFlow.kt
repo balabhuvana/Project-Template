@@ -1,12 +1,10 @@
 package com.project.template.repo.user
 
-import com.project.template.room.UserDao
-
 class UserRepoViaFlow(var userRdsViaFlow: UserRdsViaFlow) {
 
     fun fetchUserListViaRepo() = userRdsViaFlow.fetchUserListRDSCall()
 
-    suspend fun fetchUserListAndStoreItInRoomViaRepo() = userRdsViaFlow.fetchUserListAndStoreItInRoomViaRDS()
+    suspend fun fetchUserListFromRestAndStoreItInRoomViaRepo() = userRdsViaFlow.fetchUserListFromRestAndStoreItInRoomViaRDS()
 
     fun fetchUserListRDSOfflineSupport() = userRdsViaFlow.fetchUserListRepoOfflineSupport()
 

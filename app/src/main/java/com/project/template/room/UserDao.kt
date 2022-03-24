@@ -9,10 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(user: User)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertSingleUser(singleUser: SingleUser?)
+    suspend fun insertUser(user: User?)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserList(user: List<User>?)

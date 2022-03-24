@@ -22,7 +22,7 @@ class UserDetailViewModel : ViewModel() {
                 }
                 .collect {
                     val singleUser = it;
-                    _uiState.value = UserDetailUIState.Success(singleUser)
+                    _uiState.value = UserDetailUIState.Success(singleUser?.user)
                 }
         }
     }

@@ -55,10 +55,11 @@ class UserDetailFragment : Fragment() {
         val userId = safeArgs.userIdArgs
 
         showOrHideProgressBar(View.VISIBLE)
-        fetchUserDetailFromRoom(view, userId, userRepoViaFlow)
+        fetchUserDetailFromWithRestApiAndRoom(view, userId, userRepoViaFlow)
     }
 
-    private fun fetchUserDetailFromRoom(view: View, userId: Int, userRepoViaFlow: UserRepoViaFlow) {
+    private fun fetchUserDetailFromWithRestApiAndRoom(view: View, userId: Int, userRepoViaFlow: UserRepoViaFlow) {
+        userDetailViewModel.fetchUserDetailViaVM(userId.toString(), userRepoViaFlow)
         userDetailViewModel.fetchUserDetailFromRoomVM(userId, userRepoViaFlow)
 
         lifecycleScope.launch {
@@ -66,9 +67,7 @@ class UserDetailFragment : Fragment() {
                 userDetailViewModel.uiState.collect() {
                     when (it) {
                         is UserDetailUIState.Success -> {
-                            if (it.singleUser?.user != null) {
-                                setUserData(it.singleUser?.user)
-                            }
+                            setUserData(it.user)
                         }
                         is UserDetailUIState.Failure -> {
                             showSnackBar(view, it.exception.message.toString())
@@ -89,9 +88,7 @@ class UserDetailFragment : Fragment() {
                 userDetailViewModel.uiState.collect() {
                     when (it) {
                         is UserDetailUIState.Success -> {
-                            if (it.singleUser?.user != null) {
-                                setUserData(it.singleUser?.user)
-                            }
+                            setUserData(it.user)
                         }
                         is UserDetailUIState.Failure -> {
                             showSnackBar(view, it.exception.message.toString())
@@ -108,6 +105,7 @@ class UserDetailFragment : Fragment() {
         userDetailBinding.tvFirstName.text = user?.userFirstName
         userDetailBinding.tvLastName.text = user?.userLastName
         userDetailBinding.tvEmail.text = user?.userEmail
+        showOrHideProgressBar(View.GONE)
 
         Picasso.get()
             .load(user?.userAvatar).fit().centerCrop()

@@ -1,6 +1,5 @@
 package com.project.template.repo.user
 
-import android.util.Log
 import com.project.template.network.ApiWebService
 import com.project.template.room.UserDao
 import kotlinx.coroutines.flow.flow
@@ -13,7 +12,7 @@ class UserRdsViaFlow(var userDao: UserDao, var apiWebService: ApiWebService?) {
             emit(userList)
         }
 
-    suspend fun fetchUserListAndStoreItInRoomViaRDS() {
+    suspend fun fetchUserListFromRestAndStoreItInRoomViaRDS() {
         userDao.insertUserList(apiWebService?.fetchUserList()?.userModelList)
     }
 
@@ -27,7 +26,7 @@ class UserRdsViaFlow(var userDao: UserDao, var apiWebService: ApiWebService?) {
 
     suspend fun fetchUserDetailAndSaveItRoomRdsCall(userId: String) {
         val singleUser = apiWebService?.fetchUserDetail(userId)
-        userDao.insertSingleUser(singleUser)
+        userDao.insertUser(singleUser?.user)
     }
 
     fun fetchUserDetailFromRoomRdsCall(userId: Int) = userDao.findUserById(userId)

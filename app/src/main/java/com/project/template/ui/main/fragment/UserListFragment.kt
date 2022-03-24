@@ -52,11 +52,11 @@ class UserListFragment : Fragment() {
         val userRdsViaFlow = UserRdsViaFlow(userDao, apiWebService)
         val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
 
-        fetchUserListFetchUserListAndSaveInRoomOfflineSupport(view, userRepoViaFlow)
+        fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view, userRepoViaFlow)
     }
 
-    private fun fetchUserListFetchUserListAndSaveInRoomOfflineSupport(view: View, userRepoViaFlow: UserRepoViaFlow) {
-        userListViewModel.fetchUserListAndStoreItInRoomViaVM(userRepoViaFlow)
+    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View, userRepoViaFlow: UserRepoViaFlow) {
+        userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM(userRepoViaFlow)
         userListViewModel.listenUserListOfflineSupportVM(userRepoViaFlow)
 
         lifecycleScope.launch {
