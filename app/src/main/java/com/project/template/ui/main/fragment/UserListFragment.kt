@@ -22,9 +22,10 @@ import com.project.template.repo.user.UserRepoViaFlow
 import com.project.template.room.UserDatabase
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
+import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
-class UserListFragment : Fragment() {
+class UserListFragment : BaseFragment() {
 
     private lateinit var fragmentUserBinding: FragmentUserBinding
     private val userListViewModel: UserListViewModel by activityViewModels()
@@ -55,7 +56,10 @@ class UserListFragment : Fragment() {
         fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view, userRepoViaFlow)
     }
 
-    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View, userRepoViaFlow: UserRepoViaFlow) {
+    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(
+        view: View,
+        userRepoViaFlow: UserRepoViaFlow
+    ) {
         userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM(userRepoViaFlow)
         userListViewModel.listenUserListOfflineSupportVM(userRepoViaFlow)
 
@@ -69,7 +73,7 @@ class UserListFragment : Fragment() {
                             }
                         }
                         is UserUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
                         }
                     }
 
@@ -91,7 +95,7 @@ class UserListFragment : Fragment() {
                             }
                         }
                         is UserUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
                         }
                     }
                 }
@@ -99,12 +103,8 @@ class UserListFragment : Fragment() {
         }
     }
 
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
-    }
-
     private fun updateUserListAdapter(userList: List<User>) {
-        val userListAdapter = UserListAdapter(userList)
+        val userListAdapter = UserListAdapter(context, userList)
         userListRecyclerView = fragmentUserBinding.userRecyclerView
         userListRecyclerView.adapter = userListAdapter
         userListRecyclerView.layoutManager = LinearLayoutManager(activity)

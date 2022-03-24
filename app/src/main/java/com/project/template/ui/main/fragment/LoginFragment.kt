@@ -20,9 +20,10 @@ import com.project.template.network.RetrofitClient
 import com.project.template.repo.login.LoginRDSViaFlow
 import com.project.template.repo.login.LoginRepoViaFlow
 import com.project.template.ui.main.viewmodels.LoginViewModelViaFlow
+import com.project.template.utils.CommonUtils
 import kotlinx.coroutines.launch
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -37,15 +38,19 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.nextButton.setOnClickListener {
-            showOrHideProgressBar(View.VISIBLE)
-            val loginWebService = RetrofitClient.instance?.getMyApi()
-            val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
-            val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
-            val loginRequestModel = buildLoginRequestObject(
-                binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
-            )
+            if (isNetworkAvailable) {
+                CommonUtils.showOrHideProgressBar(binding.loginProgressBar, View.VISIBLE)
+                val loginWebService = RetrofitClient.instance?.getMyApi()
+                val loginRDSViaFlow = LoginRDSViaFlow(loginWebService)
+                val loginRepoViaFlow = LoginRepoViaFlow(loginRDSViaFlow)
+                val loginRequestModel = buildLoginRequestObject(
+                    binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
+                )
 
-            requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
+                requestLoginApiCall(it, loginRequestModel, loginRepoViaFlow)
+            } else {
+                CommonUtils.showSnackBar(it, getString(R.string.check_internet))
+            }
         }
 
         binding.tvNewToApp.setOnClickListener {
@@ -58,10 +63,6 @@ class LoginFragment : Fragment() {
 
     private fun launchScreen(view: View, action: NavDirections) {
         view.findNavController().navigate(action)
-    }
-
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
     }
 
     private fun requestLoginApiCall(
@@ -78,25 +79,21 @@ class LoginFragment : Fragment() {
                         is LoginUiState.Success -> {
                             val token = uiState.loginResponseModel?.token
                             if (token?.isNotEmpty() == true) {
-                                showSnackBar(view, getString(R.string.login_successfully))
+                                CommonUtils.showSnackBar(view, getString(R.string.login_successfully))
                                 launchScreen(view, LoginFragmentDirections.actionLoginToUserFragment())
-                                showOrHideProgressBar(View.GONE)
+                                CommonUtils.showOrHideProgressBar(binding.loginProgressBar, View.GONE)
                             } else {
-                                showSnackBar(view, "token is empty")
+                                CommonUtils.showSnackBar(view, "token is empty")
                             }
                         }
                         is LoginUiState.Error -> {
-                            showSnackBar(view, "" + uiState.exception.message)
-                            showOrHideProgressBar(View.GONE)
+                            CommonUtils.showSnackBar(view, "" + uiState.exception.message)
+                            CommonUtils.showOrHideProgressBar(binding.loginProgressBar, View.GONE)
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun showOrHideProgressBar(showOrHide: Int) {
-        _binding?.loginProgressBar?.visibility = showOrHide
     }
 
 }

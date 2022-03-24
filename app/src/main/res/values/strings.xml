@@ -34,4 +34,7 @@
     <string name="kumar">kumar</string>
     <string name="select_all">Select All</string>
     <string name="enter_user_id">Enter user id</string>
+    <string name="network_available">\"Network is Available \"</string>
+    <string name="network_not_available">\"Network is not available \"</string>
+    <string name="check_internet">Please check your internet connection</string>
 </resources>

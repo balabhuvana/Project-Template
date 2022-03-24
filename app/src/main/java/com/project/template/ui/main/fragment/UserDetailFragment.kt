@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.room.Room
-import com.google.android.material.snackbar.Snackbar
 import com.project.template.R
 import com.project.template.databinding.FragmentUserDetailBinding
 import com.project.template.model.User
@@ -21,20 +19,21 @@ import com.project.template.repo.user.UserRdsViaFlow
 import com.project.template.repo.user.UserRepoViaFlow
 import com.project.template.room.UserDatabase
 import com.project.template.ui.main.viewmodels.UserDetailViewModel
+import com.project.template.utils.CommonUtils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
-class UserDetailFragment : Fragment() {
+class UserDetailFragment : BaseFragment() {
 
     private val userDetailViewModel: UserDetailViewModel by activityViewModels()
-    private lateinit var userDetailBinding: FragmentUserDetailBinding
+    private lateinit var binding: FragmentUserDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        userDetailBinding = FragmentUserDetailBinding.inflate(inflater, container, false)
-        return userDetailBinding.root
+        binding = FragmentUserDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +53,7 @@ class UserDetailFragment : Fragment() {
         val safeArgs: UserDetailFragmentArgs by navArgs()
         val userId = safeArgs.userIdArgs
 
-        showOrHideProgressBar(View.VISIBLE)
+        CommonUtils.showOrHideProgressBar(binding.detailProgressBar, View.VISIBLE)
         fetchUserDetailFromWithRestApiAndRoom(view, userId, userRepoViaFlow)
     }
 
@@ -70,8 +69,8 @@ class UserDetailFragment : Fragment() {
                             setUserData(it.user)
                         }
                         is UserDetailUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
-                            showOrHideProgressBar(View.GONE)
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showOrHideProgressBar(binding.detailProgressBar, View.GONE)
                         }
                     }
                 }
@@ -91,8 +90,8 @@ class UserDetailFragment : Fragment() {
                             setUserData(it.user)
                         }
                         is UserDetailUIState.Failure -> {
-                            showSnackBar(view, it.exception.message.toString())
-                            showOrHideProgressBar(View.GONE)
+                            CommonUtils.showSnackBar(view, it.exception.message.toString())
+                            CommonUtils.showOrHideProgressBar(binding.detailProgressBar, View.GONE)
                         }
                     }
                 }
@@ -102,23 +101,15 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun setUserData(user: User?) {
-        userDetailBinding.tvFirstName.text = user?.userFirstName
-        userDetailBinding.tvLastName.text = user?.userLastName
-        userDetailBinding.tvEmail.text = user?.userEmail
-        showOrHideProgressBar(View.GONE)
+        binding.tvFirstName.text = user?.userFirstName
+        binding.tvLastName.text = user?.userLastName
+        binding.tvEmail.text = user?.userEmail
+        CommonUtils.showOrHideProgressBar(binding.detailProgressBar, View.GONE)
 
         Picasso.get()
             .load(user?.userAvatar).fit().centerCrop()
             .placeholder(R.drawable.ic_baseline_account_circle_24)
             .error(R.drawable.ic_baseline_account_circle_24)
-            .into(userDetailBinding.ivUserImage)
-    }
-
-    private fun showSnackBar(view: View, displayText: String) {
-        Snackbar.make(view, displayText, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showOrHideProgressBar(showOrHide: Int) {
-        userDetailBinding.detailProgressBar.visibility = showOrHide
+            .into(binding.ivUserImage)
     }
 }
