@@ -3,7 +3,7 @@ package com.project.template.ui.main.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.template.model.UserUIState
-import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.repo.user.UserRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -16,9 +16,9 @@ class UserListViewModel : ViewModel() {
 
     val uiState: StateFlow<UserUIState> = _uiState
 
-    fun fetchUserList(userRepoViaFlow: UserRepoViaFlow) {
+    fun fetchUserList(userRepo: UserRepo) {
         viewModelScope.launch {
-            userRepoViaFlow.fetchUserListViaRepo()
+            userRepo.fetchUserListViaRepo()
                 .catch { exception ->
                     _uiState.value = UserUIState.Failure(exception)
                 }.collect {
@@ -27,15 +27,15 @@ class UserListViewModel : ViewModel() {
         }
     }
 
-    fun fetchUserListFromRestAndStoreItInRoomViaVM(userRepoViaFlow: UserRepoViaFlow) {
+    fun fetchUserListFromRestAndStoreItInRoomViaVM(userRepo: UserRepo) {
         viewModelScope.launch {
-            userRepoViaFlow.fetchUserListFromRestAndStoreItInRoomViaRepo()
+            userRepo.fetchUserListFromRestAndStoreItInRoomViaRepo()
         }
     }
 
-    fun listenUserListOfflineSupportVM(userRepoViaFlow: UserRepoViaFlow) {
+    fun listenUserListOfflineSupportVM(userRepo: UserRepo) {
         viewModelScope.launch {
-            userRepoViaFlow.fetchUserListRDSOfflineSupport()
+            userRepo.fetchUserListRDSOfflineSupport()
                 .catch { exception ->
                     _uiState.value = UserUIState.Failure(exception)
                 }.collect {

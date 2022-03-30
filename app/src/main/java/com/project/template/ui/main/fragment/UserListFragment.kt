@@ -17,13 +17,15 @@ import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.User
 import com.project.template.model.UserUIState
 import com.project.template.network.RetrofitClient
-import com.project.template.repo.user.UserRdsViaFlow
-import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.repo.user.UserRds
+import com.project.template.repo.user.UserRepo
 import com.project.template.room.UserDatabase
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class UserListFragment : Fragment() {
 
     private lateinit var fragmentUserBinding: FragmentUserBinding
@@ -49,15 +51,15 @@ class UserListFragment : Fragment() {
         val userDao = userDatabase.userDao()
 
         val apiWebService = RetrofitClient.instance?.getMyApi()
-        val userRdsViaFlow = UserRdsViaFlow(userDao, apiWebService)
-        val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
+        val userRds = UserRds(userDao, apiWebService)
+        val userRepo = UserRepo(userRds)
 
-        fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view, userRepoViaFlow)
+        fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view, userRepo)
     }
 
-    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View, userRepoViaFlow: UserRepoViaFlow) {
-        userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM(userRepoViaFlow)
-        userListViewModel.listenUserListOfflineSupportVM(userRepoViaFlow)
+    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View, userRepo: UserRepo) {
+        userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM(userRepo)
+        userListViewModel.listenUserListOfflineSupportVM(userRepo)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -78,8 +80,8 @@ class UserListFragment : Fragment() {
         }
     }
 
-    private fun fetchUserList(view: View, userRepoViaFlow: UserRepoViaFlow) {
-        userListViewModel.fetchUserList(userRepoViaFlow)
+    private fun fetchUserList(view: View, userRepo: UserRepo) {
+        userListViewModel.fetchUserList(userRepo)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

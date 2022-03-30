@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class LoginRDSViaFlow(private var apiWebService: ApiWebService?) {
+class LoginRds(private var apiWebService: ApiWebService?) {
 
     fun fetchLoginApi(loginRequestModel: LoginRequestModel) = flow {
         val loginResponseModel = apiWebService?.loginApiCall(loginRequestModel)

@@ -7,20 +7,20 @@ import com.project.template.model.LoginResponseModel
 import com.project.template.model.LoginUiState
 import com.project.template.model.LoginUiState.Error
 import com.project.template.model.LoginUiState.Success
-import com.project.template.repo.login.LoginRepoViaFlow
+import com.project.template.repo.login.LoginRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class LoginViewModelViaFlow : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(Success(LoginResponseModel("")))
     val uiState: StateFlow<LoginUiState> = _uiState
 
-    fun loginApiViewModel(loginRequestModel: LoginRequestModel, loginRepoViaFlow: LoginRepoViaFlow) {
+    fun loginApiViewModel(loginRequestModel: LoginRequestModel, loginRepo: LoginRepo) {
         viewModelScope.launch {
-            loginRepoViaFlow.fetchLoginApiViaRepo(loginRequestModel)
+            loginRepo.fetchLoginApiViaRepo(loginRequestModel)
                 .catch { exception ->
                     _uiState.value = Error(exception)
                 }

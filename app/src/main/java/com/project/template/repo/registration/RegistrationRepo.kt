@@ -2,9 +2,9 @@ package com.project.template.repo.registration
 
 import com.project.template.model.RegistrationRequestModel
 
-class RegistrationRepoViaFlow(var registrationRDSViaFlow: RegistrationRdsViaFlow) {
+class RegistrationRepo(var registrationRDS: RegistrationRds) {
 
     fun registrationApiCallRepo(registrationRequestModel: RegistrationRequestModel) =
-        registrationRDSViaFlow.registrationApiCallRDS(registrationRequestModel)
+        registrationRDS.registrationApiCallRDS(registrationRequestModel)
 
 }

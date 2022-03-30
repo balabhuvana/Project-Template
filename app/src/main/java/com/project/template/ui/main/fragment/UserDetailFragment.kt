@@ -17,13 +17,15 @@ import com.project.template.databinding.FragmentUserDetailBinding
 import com.project.template.model.User
 import com.project.template.model.UserDetailUIState
 import com.project.template.network.RetrofitClient
-import com.project.template.repo.user.UserRdsViaFlow
-import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.repo.user.UserRds
+import com.project.template.repo.user.UserRepo
 import com.project.template.room.UserDatabase
 import com.project.template.ui.main.viewmodels.UserDetailViewModel
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class UserDetailFragment : Fragment() {
 
     private val userDetailViewModel: UserDetailViewModel by activityViewModels()
@@ -48,19 +50,19 @@ class UserDetailFragment : Fragment() {
 
 
         val apiWebService = RetrofitClient.instance?.getMyApi()
-        val userRdsViaFlow = UserRdsViaFlow(userDao, apiWebService)
-        val userRepoViaFlow = UserRepoViaFlow(userRdsViaFlow)
+        val userRds = UserRds(userDao, apiWebService)
+        val userRepo = UserRepo(userRds)
 
         val safeArgs: UserDetailFragmentArgs by navArgs()
         val userId = safeArgs.userIdArgs
 
         showOrHideProgressBar(View.VISIBLE)
-        fetchUserDetailFromWithRestApiAndRoom(view, userId, userRepoViaFlow)
+        fetchUserDetailFromWithRestApiAndRoom(view, userId, userRepo)
     }
 
-    private fun fetchUserDetailFromWithRestApiAndRoom(view: View, userId: Int, userRepoViaFlow: UserRepoViaFlow) {
-        userDetailViewModel.fetchUserDetailViaVM(userId.toString(), userRepoViaFlow)
-        userDetailViewModel.fetchUserDetailFromRoomVM(userId, userRepoViaFlow)
+    private fun fetchUserDetailFromWithRestApiAndRoom(view: View, userId: Int, userRepo: UserRepo) {
+        userDetailViewModel.fetchUserDetailViaVM(userId.toString(), userRepo)
+        userDetailViewModel.fetchUserDetailFromRoomVM(userId, userRepo)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -79,9 +81,9 @@ class UserDetailFragment : Fragment() {
         }
     }
 
-    private fun fetchUserDetail(view: View, userId: String, userRepoViaFlow: UserRepoViaFlow) {
+    private fun fetchUserDetail(view: View, userId: String, userRepo: UserRepo) {
 
-        userDetailViewModel.fetchUserDetailViaVM(userId, userRepoViaFlow)
+        userDetailViewModel.fetchUserDetailViaVM(userId, userRepo)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

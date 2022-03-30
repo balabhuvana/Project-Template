@@ -3,7 +3,7 @@ package com.project.template.ui.main.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.template.model.UserDetailUIState
-import com.project.template.repo.user.UserRepoViaFlow
+import com.project.template.repo.user.UserRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -14,9 +14,9 @@ class UserDetailViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<UserDetailUIState>(UserDetailUIState.Success(null))
     val uiState: StateFlow<UserDetailUIState> = _uiState
 
-    fun fetchUserDetailViaVM(userId: String, userRepoViaFlow: UserRepoViaFlow) {
+    fun fetchUserDetailViaVM(userId: String, userRepo: UserRepo) {
         viewModelScope.launch {
-            userRepoViaFlow.fetchUserDetailRepo(userId)
+            userRepo.fetchUserDetailRepo(userId)
                 .catch { exception ->
                     _uiState.value = UserDetailUIState.Failure(exception)
                 }
@@ -27,9 +27,9 @@ class UserDetailViewModel : ViewModel() {
         }
     }
 
-    fun fetchUserDetailFromRoomVM(userId: Int, userRepoViaFlow: UserRepoViaFlow) {
+    fun fetchUserDetailFromRoomVM(userId: Int, userRepo: UserRepo) {
         viewModelScope.launch {
-            userRepoViaFlow.fetchUserDetailFromRoomRepoCall(userId)
+            userRepo.fetchUserDetailFromRoomRepoCall(userId)
                 .catch { exception ->
                     _uiState.value = UserDetailUIState.Failure(exception)
                 }.collect {

@@ -4,7 +4,7 @@ import com.project.template.network.ApiWebService
 import com.project.template.room.UserDao
 import kotlinx.coroutines.flow.flow
 
-class UserRdsViaFlow(var userDao: UserDao, var apiWebService: ApiWebService?) {
+class UserRds(var userDao: UserDao, var apiWebService: ApiWebService?) {
 
     fun fetchUserListRDSCall() =
         flow {

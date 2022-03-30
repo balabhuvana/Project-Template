@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -97,5 +98,9 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation('androidx.room:room-paging:2.5.0-alpha01')
+
+    // hilt
+    implementation 'com.google.dagger:hilt-android:2.41'
+    kapt 'com.google.dagger:hilt-compiler:2.41'
 
 }

@@ -4,7 +4,7 @@ import com.project.template.model.RegistrationRequestModel
 import com.project.template.network.ApiWebService
 import kotlinx.coroutines.flow.flow
 
-class RegistrationRdsViaFlow(var apiWebService: ApiWebService?) {
+class RegistrationRds(var apiWebService: ApiWebService?) {
 
     fun registrationApiCallRDS(registrationRequestModel: RegistrationRequestModel) =
         flow {

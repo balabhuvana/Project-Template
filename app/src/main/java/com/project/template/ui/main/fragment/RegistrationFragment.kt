@@ -17,15 +17,17 @@ import com.project.template.databinding.FragmentRegistrationBinding
 import com.project.template.model.RegistrationRequestModel
 import com.project.template.model.RegistrationUiState
 import com.project.template.network.RetrofitClient
-import com.project.template.repo.registration.RegistrationRdsViaFlow
-import com.project.template.repo.registration.RegistrationRepoViaFlow
-import com.project.template.ui.main.viewmodels.RegistrationViewModelViaFlow
+import com.project.template.repo.registration.RegistrationRds
+import com.project.template.repo.registration.RegistrationRepo
+import com.project.template.ui.main.viewmodels.RegistrationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
-    private val registrationViewModel: RegistrationViewModelViaFlow by activityViewModels()
+    private val registrationViewModel: RegistrationViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
@@ -46,13 +48,13 @@ class RegistrationFragment : Fragment() {
         binding.registerButton.setOnClickListener {
             showOrHideProgressBar(View.VISIBLE)
             val apiWebService = RetrofitClient.instance?.getMyApi()
-            val registrationRDSViaFlow = RegistrationRdsViaFlow(apiWebService)
-            val registrationRepoViaFlow = RegistrationRepoViaFlow(registrationRDSViaFlow)
+            val registrationRDS = RegistrationRds(apiWebService)
+            val registrationRepo = RegistrationRepo(registrationRDS)
             val registrationRequestModel = buildRegisterRequestObject(
                 binding.etEmail.text.toString(),
                 binding.etPasswordRegistration.text.toString()
             )
-            requestApiCall(view, registrationRequestModel, registrationRepoViaFlow)
+            requestApiCall(view, registrationRequestModel, registrationRepo)
         }
     }
 
@@ -69,9 +71,9 @@ class RegistrationFragment : Fragment() {
     private fun requestApiCall(
         view: View,
         registrationRequestModel: RegistrationRequestModel,
-        registrationRepoViaFlow: RegistrationRepoViaFlow
+        registrationRepo: RegistrationRepo
     ) {
-        registrationViewModel.registrationApiCallViewModel(registrationRequestModel, registrationRepoViaFlow)
+        registrationViewModel.registrationApiCallViewModel(registrationRequestModel, registrationRepo)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registrationViewModel.uiState.collect { uiState ->

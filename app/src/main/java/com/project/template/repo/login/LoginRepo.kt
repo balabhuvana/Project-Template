@@ -2,9 +2,9 @@ package com.project.template.repo.login
 
 import com.project.template.model.LoginRequestModel
 
-class LoginRepoViaFlow(var loginRDSViaFlow: LoginRDSViaFlow) {
+class LoginRepo(var loginRds: LoginRds) {
 
     fun fetchLoginApiViaRepo(loginRequestModel: LoginRequestModel) =
-        loginRDSViaFlow.fetchLoginApi(loginRequestModel)
+        loginRds.fetchLoginApi(loginRequestModel)
 
 }
