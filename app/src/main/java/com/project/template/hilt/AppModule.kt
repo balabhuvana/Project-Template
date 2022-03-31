@@ -5,6 +5,9 @@ import com.project.template.repo.login.LoginRds
 import com.project.template.repo.login.LoginRepo
 import com.project.template.repo.registration.RegistrationRds
 import com.project.template.repo.registration.RegistrationRepo
+import com.project.template.repo.user.UserRds
+import com.project.template.repo.user.UserRepo
+import com.project.template.room.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +36,15 @@ class AppModule {
     fun provideRegistrationRepository(rds: RegistrationRds): RegistrationRepo {
         return RegistrationRepo(rds)
     }
+
+    @Provides
+    fun provideUserRemoteDataSource(userDao: UserDao, apiWebService: ApiWebService): UserRds {
+        return UserRds(userDao, apiWebService)
+    }
+
+    @Provides
+    fun provideUserRepository(userRds: UserRds): UserRepo {
+        return UserRepo(userRds)
+    }
+
 }

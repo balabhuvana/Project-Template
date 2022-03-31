@@ -4,19 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.template.model.UserUIState
 import com.project.template.repo.user.UserRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserListViewModel : ViewModel() {
+@HiltViewModel
+class UserListViewModel @Inject constructor(var userRepo: UserRepo) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UserUIState>(UserUIState.Success(emptyList()))
 
     val uiState: StateFlow<UserUIState> = _uiState
 
-    fun fetchUserList(userRepo: UserRepo) {
+    fun fetchUserList() {
         viewModelScope.launch {
             userRepo.fetchUserListViaRepo()
                 .catch { exception ->
@@ -27,13 +30,13 @@ class UserListViewModel : ViewModel() {
         }
     }
 
-    fun fetchUserListFromRestAndStoreItInRoomViaVM(userRepo: UserRepo) {
+    fun fetchUserListFromRestAndStoreItInRoomViaVM() {
         viewModelScope.launch {
             userRepo.fetchUserListFromRestAndStoreItInRoomViaRepo()
         }
     }
 
-    fun listenUserListOfflineSupportVM(userRepo: UserRepo) {
+    fun listenUserListOfflineSupportVM() {
         viewModelScope.launch {
             userRepo.fetchUserListRDSOfflineSupport()
                 .catch { exception ->

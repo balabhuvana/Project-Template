@@ -4,17 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.template.model.UserDetailUIState
 import com.project.template.repo.user.UserRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserDetailViewModel : ViewModel() {
+@HiltViewModel
+class UserDetailViewModel @Inject constructor(var userRepo: UserRepo) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UserDetailUIState>(UserDetailUIState.Success(null))
     val uiState: StateFlow<UserDetailUIState> = _uiState
 
-    fun fetchUserDetailViaVM(userId: String, userRepo: UserRepo) {
+    fun fetchUserDetailViaVM(userId: String) {
         viewModelScope.launch {
             userRepo.fetchUserDetailRepo(userId)
                 .catch { exception ->
@@ -27,7 +30,7 @@ class UserDetailViewModel : ViewModel() {
         }
     }
 
-    fun fetchUserDetailFromRoomVM(userId: Int, userRepo: UserRepo) {
+    fun fetchUserDetailFromRoomVM(userId: Int) {
         viewModelScope.launch {
             userRepo.fetchUserDetailFromRoomRepoCall(userId)
                 .catch { exception ->

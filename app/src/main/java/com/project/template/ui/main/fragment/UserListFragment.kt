@@ -16,9 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.User
 import com.project.template.model.UserUIState
-import com.project.template.network.RetrofitClient
-import com.project.template.repo.user.UserRds
-import com.project.template.repo.user.UserRepo
 import com.project.template.room.UserDatabase
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
@@ -50,16 +47,12 @@ class UserListFragment : Fragment() {
         ).build()
         val userDao = userDatabase.userDao()
 
-        val apiWebService = RetrofitClient.instance?.getMyApi()
-        val userRds = UserRds(userDao, apiWebService)
-        val userRepo = UserRepo(userRds)
-
-        fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view, userRepo)
+        fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view)
     }
 
-    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View, userRepo: UserRepo) {
-        userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM(userRepo)
-        userListViewModel.listenUserListOfflineSupportVM(userRepo)
+    private fun fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view: View) {
+        userListViewModel.fetchUserListFromRestAndStoreItInRoomViaVM()
+        userListViewModel.listenUserListOfflineSupportVM()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -80,8 +73,8 @@ class UserListFragment : Fragment() {
         }
     }
 
-    private fun fetchUserList(view: View, userRepo: UserRepo) {
-        userListViewModel.fetchUserList(userRepo)
+    private fun fetchUserList(view: View) {
+        userListViewModel.fetchUserList()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
