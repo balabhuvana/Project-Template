@@ -16,9 +16,6 @@ import com.project.template.R
 import com.project.template.databinding.FragmentLoginBinding
 import com.project.template.model.LoginRequestModel
 import com.project.template.model.LoginUiState
-import com.project.template.network.RetrofitClient
-import com.project.template.repo.login.LoginRds
-import com.project.template.repo.login.LoginRepo
 import com.project.template.ui.main.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,7 +25,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    val loginViewModel: LoginViewModel by activityViewModels()
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -40,14 +37,11 @@ class LoginFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             showOrHideProgressBar(View.VISIBLE)
-            val loginWebService = RetrofitClient.instance?.getMyApi()
-            val loginRds = LoginRds(loginWebService)
-            val loginRepo = LoginRepo(loginRds)
             val loginRequestModel = buildLoginRequestObject(
                 binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString()
             )
 
-            requestLoginApiCall(it, loginRequestModel, loginRepo)
+            requestLoginApiCall(it, loginRequestModel)
         }
 
         binding.tvNewToApp.setOnClickListener {
@@ -68,10 +62,9 @@ class LoginFragment : Fragment() {
 
     private fun requestLoginApiCall(
         view: View,
-        loginRequestModel: LoginRequestModel,
-        loginRepo: LoginRepo
+        loginRequestModel: LoginRequestModel
     ) {
-        loginViewModel.loginApiViewModel(loginRequestModel, loginRepo)
+        loginViewModel.loginApiViewModel(loginRequestModel)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

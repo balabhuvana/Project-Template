@@ -8,17 +8,20 @@ import com.project.template.model.LoginUiState
 import com.project.template.model.LoginUiState.Error
 import com.project.template.model.LoginUiState.Success
 import com.project.template.repo.login.LoginRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(var loginRepo: LoginRepo) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(Success(LoginResponseModel("")))
     val uiState: StateFlow<LoginUiState> = _uiState
 
-    fun loginApiViewModel(loginRequestModel: LoginRequestModel, loginRepo: LoginRepo) {
+    fun loginApiViewModel(loginRequestModel: LoginRequestModel) {
         viewModelScope.launch {
             loginRepo.fetchLoginApiViaRepo(loginRequestModel)
                 .catch { exception ->
