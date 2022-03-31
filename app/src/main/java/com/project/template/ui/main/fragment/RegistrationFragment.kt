@@ -47,14 +47,10 @@ class RegistrationFragment : Fragment() {
 
         binding.registerButton.setOnClickListener {
             showOrHideProgressBar(View.VISIBLE)
-            val apiWebService = RetrofitClient.instance?.getMyApi()
-            val registrationRDS = RegistrationRds(apiWebService)
-            val registrationRepo = RegistrationRepo(registrationRDS)
             val registrationRequestModel = buildRegisterRequestObject(
-                binding.etEmail.text.toString(),
-                binding.etPasswordRegistration.text.toString()
+                binding.etEmail.text.toString(), binding.etPasswordRegistration.text.toString()
             )
-            requestApiCall(view, registrationRequestModel, registrationRepo)
+            requestApiCall(view, registrationRequestModel)
         }
     }
 
@@ -69,11 +65,9 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun requestApiCall(
-        view: View,
-        registrationRequestModel: RegistrationRequestModel,
-        registrationRepo: RegistrationRepo
+        view: View, registrationRequestModel: RegistrationRequestModel
     ) {
-        registrationViewModel.registrationApiCallViewModel(registrationRequestModel, registrationRepo)
+        registrationViewModel.registrationApiCallViewModel(registrationRequestModel)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registrationViewModel.uiState.collect { uiState ->
@@ -82,8 +76,7 @@ class RegistrationFragment : Fragment() {
                             if (uiState.registrationResponseModel?.token?.isNotEmpty() == true) {
                                 showSnackBar(view, getString(R.string.register_successfully))
                                 launchScreen(
-                                    view,
-                                    RegistrationFragmentDirections.actionRegistrationToUserListFragment()
+                                    view, RegistrationFragmentDirections.actionRegistrationToUserListFragment()
                                 )
                                 showOrHideProgressBar(View.GONE)
                             } else {

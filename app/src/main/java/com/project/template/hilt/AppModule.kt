@@ -3,6 +3,8 @@ package com.project.template.hilt
 import com.project.template.network.ApiWebService
 import com.project.template.repo.login.LoginRds
 import com.project.template.repo.login.LoginRepo
+import com.project.template.repo.registration.RegistrationRds
+import com.project.template.repo.registration.RegistrationRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +24,13 @@ class AppModule {
         return LoginRepo(loginRds)
     }
 
+    @Provides
+    fun provideRegistrationRemoteDataSource(apiWebService: ApiWebService): RegistrationRds {
+        return RegistrationRds(apiWebService)
+    }
+
+    @Provides
+    fun provideRegistrationRepository(rds: RegistrationRds): RegistrationRepo {
+        return RegistrationRepo(rds)
+    }
 }
