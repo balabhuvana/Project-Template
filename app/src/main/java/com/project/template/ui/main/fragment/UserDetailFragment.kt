@@ -50,7 +50,7 @@ class UserDetailFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userDetailViewModel.uiState.collect() {
+                userDetailViewModel.uiState.collect {
                     when (it) {
                         is UserDetailUIState.Success -> {
                             setUserData(it.user)
@@ -71,7 +71,7 @@ class UserDetailFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userDetailViewModel.uiState.collect() {
+                userDetailViewModel.uiState.collect {
                     when (it) {
                         is UserDetailUIState.Success -> {
                             setUserData(it.user)

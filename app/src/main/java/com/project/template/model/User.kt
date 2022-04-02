@@ -48,9 +48,7 @@ data class UserListRoot(
 )
 
 data class SingleUser(@SerializedName("data") var user: User?) {
-    companion object {
-
-    }
+    companion object
 
 }
 

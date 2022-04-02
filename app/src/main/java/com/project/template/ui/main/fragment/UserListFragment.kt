@@ -11,12 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.google.android.material.snackbar.Snackbar
 import com.project.template.databinding.FragmentUserBinding
 import com.project.template.model.User
 import com.project.template.model.UserUIState
-import com.project.template.room.UserDatabase
 import com.project.template.ui.main.adapter.UserListAdapter
 import com.project.template.ui.main.viewmodels.UserListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,13 +38,6 @@ class UserListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val userDatabase = Room.databaseBuilder(
-            context!!,
-            UserDatabase::class.java, "database-name"
-        ).build()
-        val userDao = userDatabase.userDao()
-
         fetchUserListFetchUserListFromRestAndSaveItInRoomOfflineSupport(view)
     }
 
@@ -78,7 +69,7 @@ class UserListFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userListViewModel.uiState.collect { it ->
+                userListViewModel.uiState.collect {
                     when (it) {
                         is UserUIState.Success -> {
                             it.userList?.let { userList ->

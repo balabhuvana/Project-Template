@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(var registrationRepo: RegistrationRepo) : ViewModel() {
+class RegistrationViewModel @Inject constructor(private var registrationRepo: RegistrationRepo) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<RegistrationUiState>(RegistrationUiState.Success(RegistrationResponseModel(0, "")))

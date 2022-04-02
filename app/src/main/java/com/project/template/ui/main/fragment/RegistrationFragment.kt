@@ -16,9 +16,6 @@ import com.project.template.R
 import com.project.template.databinding.FragmentRegistrationBinding
 import com.project.template.model.RegistrationRequestModel
 import com.project.template.model.RegistrationUiState
-import com.project.template.network.RetrofitClient
-import com.project.template.repo.registration.RegistrationRds
-import com.project.template.repo.registration.RegistrationRepo
 import com.project.template.ui.main.viewmodels.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -61,7 +61,7 @@ class LearnRoomFragment : Fragment() {
 
         binding.btnGetAllUser.setOnClickListener {
             lifecycleScope.launch {
-                userDao.getAllUser().collect() {
+                userDao.getAllUser().collect {
                     Log.i("----> ", "User: $it")
                 }
             }

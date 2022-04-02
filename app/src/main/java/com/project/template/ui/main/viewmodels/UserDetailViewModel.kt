@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserDetailViewModel @Inject constructor(var userRepo: UserRepo) : ViewModel() {
+class UserDetailViewModel @Inject constructor(private var userRepo: UserRepo) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UserDetailUIState>(UserDetailUIState.Success(null))
     val uiState: StateFlow<UserDetailUIState> = _uiState
@@ -24,7 +24,7 @@ class UserDetailViewModel @Inject constructor(var userRepo: UserRepo) : ViewMode
                     _uiState.value = UserDetailUIState.Failure(exception)
                 }
                 .collect {
-                    val singleUser = it;
+                    val singleUser = it
                     _uiState.value = UserDetailUIState.Success(singleUser?.user)
                 }
         }
